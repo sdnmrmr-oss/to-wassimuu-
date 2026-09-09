@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#E3D6BF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>To Wassimu ♡</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&family=Patrick+Hand&display=swap');
+
+:root{
+  --amaranth:#933B5B;
+  --thulian:#B5728A;
+  --sage:#AABAAE;
+  --cream:#E3D6BF;
+  --olive:#9F9679;
+  --ink:#4d3740;
+  --paper:#f7efe3;
+  --pink-soft:#ead3d7;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+  margin:0;
+  padding:0;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  touch-action:manipulation;
+}
+
+button{
+  font:inherit;
+  border:0;
+  background:none;
+  color:inherit;
+  cursor:pointer;
+}
+
+.app{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+/* Background Elements */
+.bg{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  z-index:-2;
+  pointer-events:none;
+}
+
+.flower{
+  position:absolute;
+  font-size:26px;
+  opacity:.65;
+  filter:saturate(.8);
+}
+.f1{ left:7%; top:7%; transform:rotate(-12deg); }
+.f2{ right:6%; top:15%; font-size:30px; transform:rotate(10deg); }
+.f3{ left:6%; bottom:8%; font-size:32px; transform:rotate(15deg); }
+.f4{ right:8%; bottom:10%; font-size:25px; transform:rotate(-8deg); }
+
+.cloud{
+  position:absolute;
+  width:120px;
+  height:44px;
+  border-radius:50px;
+  background:rgba(255,250,245,.45);
+  filter:blur(1px);
+}
+.c1{ top:18%; right:-20px; transform:scale(.7); }
+.c2{ top:65%; left:-30px; transform:scale(.65); }
+
+/* Top Music Toggle */
+.top-music{
+  position:absolute;
+  right:20px;
+  top:max(20px, env(safe-area-inset-top));
+  z-index:30;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(255,255,255,.45);
+  backdrop-filter:blur(10px);
+  font-size:16px;
+  display:grid;
+  place-items:center;
+  color:var(--amaranth);
+  box-shadow:0 4px 12px rgba(147,59,91,.08);
+  transition: transform .2s ease;
+}
+.top-music:active{ transform:scale(0.9); }
+
+/* Scenes */
+.scene{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:30px 24px max(30px, env(safe-area-inset-bottom));
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(14px) scale(.985);
+  transition:
+    opacity .6s cubic-bezier(.16,1,.3,1),
+    transform .6s cubic-bezier(.16,1,.3,1),
+    visibility .6s;
+}
+
+.scene.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:none;
+}
+
+/* Typography & Components */
+.eyebrow{
+  font-family:'Patrick Hand',cursive;
+  font-size:18px;
+  letter-spacing:.4px;
+  color:var(--olive);
+}
+
+.title{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--amaranth);
+  font-size:clamp(46px, 14vw, 68px);
+  line-height:.9;
+  margin:12px 0;
+  text-align:center;
+}
+
+.script-text{
+  font-family:'Patrick Hand',cursive;
+  font-size:20px;
+  color:var(--thulian);
+}
+
+/* Scene 1: Heart Button */
+.heart-btn{
+  width:76px;
+  height:76px;
+  margin:25px auto 8px;
+  position:relative;
+  transform:rotate(-45deg);
+  background:var(--amaranth);
+  border-radius:12px 0 12px 0;
+  box-shadow:0 12px 28px rgba(147,59,91,.22);
+  animation:float 2.8s ease-in-out infinite;
+  cursor:pointer;
+}
+.heart-btn:before, .heart-btn:after{
+  content:"";
+  position:absolute;
+  background:var(--amaranth);
+  border-radius:50%;
+  width:76px;
+  height:76px;
+}
+.heart-btn:before{ top:-38px; left:0; }
+.heart-btn:after{ left:38px; top:0; }
+
+.heart-inner{
+  position:absolute;
+  z-index:2;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:white;
+  font-size:26px;
+  transform:rotate(45deg);
+}
+
+.press-me{
+  font-family:'Patrick Hand',cursive;
+  font-size:15px;
+  color:var(--olive);
+  opacity:.85;
+  margin-top:6px;
+  letter-spacing:.5px;
+}
+
+@keyframes float{
+  0%, 100% { transform: rotate(-45deg) translateY(0); }
+  50% { transform: rotate(-45deg) translateY(-6px); }
+}
+
+.bounce {
+  animation: bounceAnim .4s cubic-bezier(.175, .885, .32, 1.275) !important;
+}
+@keyframes bounceAnim {
+  0% { transform: rotate(-45deg) scale(1); }
+  50% { transform: rotate(-45deg) scale(1.2); }
+  100% { transform: rotate(-45deg) scale(1); }
+}
+
+/* Scene 2: Cake & Candle */
+.cake-container{
+  text-align:center;
+  position:relative;
+  margin:15px 0;
+}
+
+.cake{
+  position:relative;
+  width:240px;
+  height:210px;
+  margin:0 auto;
+  filter:drop-shadow(0 14px 20px rgba(91,62,63,.1));
+}
+
+.plate{
+  position:absolute;
+  bottom:0;
+  left:10%;
+  width:80%;
+  height:22px;
+  border-radius:50%;
+  background:#f0e4d2;
+  border:2px solid #d5c2a7;
+}
+
+.layer{
+  position:absolute;
+  left:15%;
+  width:70%;
+  background:#f9f0e6;
+  border:2px solid #d8c2b0;
+  border-radius:16px 16px 20px 20px;
+}
+.layer.bottom{ bottom:20px; height:70px; }
+.layer.top{ bottom:82px; height:60px; width:58%; left:21%; border-radius:16px; }
+
+.icing{
+  position:absolute;
+  left:14%;
+  bottom:74px;
+  width:72%;
+  height:26px;
+  background:#fff5ee;
+  border-radius:50%;
+  border:2px solid #e2cbbe;
+}
+.icing.top{ bottom:134px; left:20%; width:60%; height:22px; }
+
+/* Candle */
+.candle{
+  position:absolute;
+  bottom:152px;
+  left:calc(50% - 6px);
+  width:12px;
+  height:42px;
+  background:linear-gradient(90deg, #b5728a, #d495ab, #b5728a);
+  border-radius:4px;
+  z-index:5;
+}
+
+.flame{
+  position:absolute;
+  top:-22px;
+  left:calc(50% - 7px);
+  width:14px;
+  height:22px;
+  background:radial-gradient(circle at 50% 80%, #fff7d6 0%, #ffb347 60%, #ff6b6b 100%);
+  border-radius:50% 50% 35% 35%;
+  animation: flicker 1.4s infinite alternate;
+  cursor:pointer;
+  box-shadow: 0 0 12px rgba(255,179,71,0.6);
+  transform-origin: bottom center;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
+  100% { transform: scale(1.08) rotate(2deg); opacity: 1; }
+}
+
+.flame.out {
+  transform: scale(0) !important;
+  opacity: 0;
+  transition: all .3s ease;
+}
+
+/* Smoke effect */
+.smoke {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  width: 6px;
+  height: 35px;
+  background: rgba(255,255,255,0.7);
+  filter: blur(4px);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.smoke.active {
+  animation: riseSmoke 1.5s ease-out forwards;
+}
+@keyframes riseSmoke {
+  0% { transform: translate(-50%, 0) scale(0.5); opacity: 0.8; }
+  100% { transform: translate(-50%, -45px) scale(2.2); opacity: 0; }
+}
+
+.instruction-text{
+  margin-top:14px;
+  font-family:'Patrick Hand',cursive;
+  font-size:18px;
+  color:var(--amaranth);
+}
+.sub-instruction{
+  font-size:13px;
+  color:var(--olive);
+  margin-top:4px;
+  opacity:.9;
+}
+
+/* Scene 3: Message Card */
+.card-box{
+  background:var(--paper);
+  padding:28px 24px;
+  border-radius:18px;
+  width:100%;
+  max-width:330px;
+  box-shadow:0 14px 35px rgba(91,62,63,.09);
+  border:1px solid rgba(215,187,168,.4);
+  text-align:center;
+  position:relative;
+}
+
+.card-box h3{
+  font-family:'Cormorant Garamond',serif;
+  color:var(--amaranth);
+  font-size:26px;
+  margin-bottom:14px;
+}
+
+.card-box p{
+  font-size:15px;
+  line-height:1.55;
+  color:var(--ink);
+  margin-bottom:14px;
+}
+
+.next-btn{
+  margin-top:10px;
+  font-family:'Patrick Hand',cursive;
+  font-size:18px;
+  color:var(--amaranth);
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 14px;
+  border-radius:20px;
+  background:rgba(147,59,91,.07);
+  transition: background .2s;
+}
+.next-btn:active{ background:rgba(147,59,91,.15); }
+
+/* Scene 4: Joke Screen */
+.joke-box{
+  text-align:center;
+  padding:20px;
+}
+.joke-box h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;
+  color:var(--amaranth);
+  margin-bottom:12px;
+}
+.joke-box p{
+  font-size:18px;
+  line-height:1.5;
+  margin-bottom:12px;
+}
+.emoji-lg{
+  font-size:36px;
+  margin:10px 0;
+}
+
+/* Scene 5: Notes & Final */
+.notes-container{
+  width:100%;
+  max-width:330px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.note-item{
+  background:rgba(255,255,255,.55);
+  padding:12px 16px;
+  border-radius:12px;
+  font-size:14.5px;
+  border-left:3px solid var(--thulian);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.note-item span{ color:var(--amaranth); font-size:16px; }
+
+.final-footer{
+  margin-top:18px;
+  text-align:center;
+  font-family:'Patrick Hand',cursive;
+  font-size:17px;
+  color:var(--amaranth);
+  line-height:1.4;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Background Decor -->
+  <div class="bg">
+    <div class="flower f1">🌸</div>
+    <div class="flower f2">❀</div>
+    <div class="flower f3">🌸</div>
+    <div class="flower f4">✿</div>
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+  </div>
+
+  <!-- Music Toggle Button -->
+  <button class="top-music" id="musicBtn" title="Play Music">♫</button>
+
+  <!-- SCENE 1: Welcome -->
+  <div class="scene active" id="scene1">
+    <div class="center">
+      <div class="eyebrow">a tiny little thing, just for you</div>
+      <h1 class="title">To Wassimu</h1>
+      
+      <div class="heart-btn" id="startBtn">
+        <div class="heart-inner">♡</div>
+      </div>
+      <div class="press-me">press me</div>
+    </div>
+  </div>
+
+  <!-- SCENE 2: Cake & Mic / Blow Candle -->
+  <div class="scene" id="scene2">
+    <div class="cake-container">
+      <div class="eyebrow">make a wish first tho :)</div>
+      
+      <div class="cake">
+        <div class="plate"></div>
+        <div class="layer bottom"></div>
+        <div class="icing"></div>
+        <div class="layer top"></div>
+        <div class="icing top"></div>
+        <div class="candle">
+          <div class="flame" id="flame" title="Tap to blow"></div>
+        </div>
+        <div class="smoke" id="smoke"></div>
+      </div>
+
+      <div class="instruction-text" id="blowInstruction">blow the candle 🕯️</div>
+      <div class="sub-instruction" id="tapAlt">or just tap the flame</div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: Message -->
+  <div class="scene" id="scene3">
+    <div class="card-box">
+      <h3>Happy 26, Wassim ♡</h3>
+      <p>
+        You’ve always been so kind and respectful, so I made you this little something.
+      </p>
+      <p style="margin-bottom:0;">
+        Glad the internet brought me to you.
+      </p>
+      <button class="next-btn" id="toScene4Btn" style="margin-top: 18px;">
+        there’s more →
+      </button>
+    </div>
+  </div>
+
+  <!-- SCENE 4: Joke -->
+  <div class="scene" id="scene4">
+    <div class="card-box joke-box">
+      <h2>26 looks good on you.</h2>
+      <p>unfortunately, you’re officially getting older.</p>
+      <div class="emoji-lg">😭</div>
+      <p style="font-family:'Patrick Hand',cursive; color:var(--thulian); font-size:20px; margin-top:5px;">just kidding ♡</p>
+      <button class="next-btn" id="toScene5Btn" style="margin-top:14px;">
+        one last thing →
+      </button>
+    </div>
+  </div>
+
+  <!-- SCENE 5: Appreciation Notes & Outro -->
+  <div class="scene" id="scene5">
+    <div style="width:100%; max-width:330px;">
+      <div class="eyebrow" style="text-align:center; margin-bottom:12px;">Things I appreciate about you</div>
+      
+      <div class="notes-container">
+        <div class="note-item"><span>♥</span> Your kindness</div>
+        <div class="note-item"><span>♥</span> Your way of thinking & talking</div>
+        <div class="note-item"><span>♥</span> The way you understand & make conversation easy</div>
+        <div class="note-item"><span>♥</span> Your cute nose</div>
+        <div class="note-item"><span>♥</span> The fact that somehow, we met online</div>
+      </div>
+
+      <div class="final-footer">
+        Anyway, I hope 26 is kind to you,<br>
+        that’s what you deserve.<br><br>
+        <strong>Happy Birthday, Wassimu ♡</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Scene Management
+function goToScene(sceneNumber) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.getElementById('scene' + sceneNumber).classList.add('active');
+}
+
+// Scene 1 Interaction
+const startBtn = document.getElementById('startBtn');
+startBtn.addEventListener('click', () => {
+  startBtn.classList.add('bounce');
+  setTimeout(() => {
+    goToScene(2);
+    initMicrophone();
+  }, 350);
+});
+
+// Scene 2: Candle & Mic Logic
+const flame = document.getElementById('flame');
+const smoke = document.getElementById('smoke');
+let candleOut = false;
+
+function blowOutCandle() {
+  if (candleOut) return;
+  candleOut = true;
+  
+  flame.classList.add('out');
+  smoke.classList.add('active');
+  
+  document.getElementById('blowInstruction').textContent = "Make a good wish! ✨";
+  document.getElementById('tapAlt').style.display = 'none';
+
+  setTimeout(() => {
+    goToScene(3);
+  }, 1400);
+}
+
+flame.addEventListener('click', blowOutCandle);
+
+// Microphone Detection for iPhone/Browser
+function initMicrophone() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(stream => {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        const microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+        analyser.fftSize = 256;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        function detectBlow() {
+          if (candleOut) return;
+          analyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for(let i = 0; i < bufferLength; i++) {
+            sum += dataArray[i];
+          }
+          let average = sum / bufferLength;
+          
+          // Threshold for blowing air into microphone
+          if (average > 35) {
+            blowOutCandle();
+            // Stop tracks
+            stream.getTracks().forEach(track => track.stop());
+            return;
+          }
+          requestAnimationFrame(detectBlow);
+        }
+        detectBlow();
+      })
+      .catch(err => {
+        // User denied mic or not available -> tap fallback handles it silently
+        console.log("Mic access skipped or unavailable, tap fallback active.");
+      });
+  }
+}
+
+// Navigation between final scenes
+document.getElementById('toScene4Btn').addEventListener('click', () => {
+  goToScene(4);
+});
+
+document.getElementById('toScene5Btn').addEventListener('click', () => {
+  goToScene(5);
+});
+
+// Dreamy Jazz / Soft Audio Generator (Web Audio API synth so no external MP3 link breaks)
+let audioCtx = null;
+let isPlaying = false;
+let synthInterval = null;
+
+const musicBtn = document.getElementById('musicBtn');
+musicBtn.addEventListener('click', () => {
+  if (!isPlaying) {
+    startDreamyJazz();
+    musicBtn.style.background = 'var(--amaranth)';
+    musicBtn.style.color = 'white';
+    isPlaying = true;
+  } else {
+    stopDreamyJazz();
+    musicBtn.style.background = 'rgba(255,255,255,.45)';
+    musicBtn.style.color = 'var(--amaranth)';
+    isPlaying = false;
+  }
+});
+
+function startDreamyJazz() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+
+  // Soft warm chords progression (Dreamy Jazz lofi vibe)
+  const chords = [
+    [261.63, 329.63, 392.00, 493.88], // Cmaj7
+    [220.00, 261.63, 329.63, 392.00], // Am7
+    [174.61, 220.00, 261.63, 329.63], // Fmaj7
+    [196.00, 246.94, 293.66, 349.23]  // G7
+  ];
+  
+  let chordIndex = 0;
+
+  function playChord() {
+    if (!isPlaying) return;
+    const chord = chords[chordIndex];
+    chord.forEach((freq, idx) => {
+      setTimeout(() => {
+        if (!isPlaying) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        
+        osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + 0.8);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.5);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 3.6);
+      }, idx * 250);
+    });
+
+    chordIndex = (chordIndex + 1) % chords.length;
+  }
+
+  playChord();
+  synthInterval = setInterval(playChord, 4000);
+}
+
+function stopDreamyJazz() {
+  if (synthInterval) {
+    clearInterval(synthInterval);
+    synthInterval = null;
+  }
+}
+</script>
+
+</body>
+</html>
